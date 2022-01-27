@@ -1,13 +1,15 @@
 from setuptools import setup
 
+long_description = open('README.md', encoding='utf8').read()
+
 setup(
     name = 'jupiterweb',
-    version = '1.0.1',
+    version = '1.0.3',
     author = 'Érick Ghuron',
     author_email = 'ghuron@usp.br',
     packages = ['jupiterweb'],
     description = 'Um scraper de disciplinas do jupiterweb',
-    long_description='README.md',
+    long_description=long_description,
     long_description_content_type='text/markdown',
     url = 'https://github.com/ghurone/jupiterweb-scraper',
     project_urls = {

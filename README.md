@@ -82,7 +82,7 @@ Nesse caso ele mostra uma lista de tuplas. Ai você escolhe a disciplina pelo in
 
 E sabemos manipular esse tipo de objeto, já que foi visto no outro tutotrial, é só manipular da mesma maneira.
 
-## ✏ Falta fazer  
+## ✏ O que falta fazer?  
 
 - Mostrar os requisitos das disciplinas
 - Mostrar o oferecimento das disciplinas
