@@ -53,13 +53,15 @@ Agora temos um objeto do tipo Discipina, vou mostrar algums atributos que ele po
 '4'
 >>> disc.objetivos
 'ok'
+>>> disc.requisitos
+[{'Curso': '43031 Física Licenciatura (diurno) - Período ideal: 6', 'Disciplinas': [{'Sigla': '4300160', 'Nome': 'Ótica'}, {'Sigla': '4300271', 'Nome': 'Eletricidade e Magnetismo II'}, {'Sigla': 'MAT0105', 'Nome': 'Geometria Analítica'}, {'Sigla': 'MAT2351', 'Nome': 'Cálculo para Funções de Várias Variáveis I'}]}, {'Curso': '43031 Física Licenciatura (noturno) - Período ideal: 6', 'Disciplinas': [{'Sigla': '4300160', 'Nome': 'Ótica'}, {'Sigla': '4300271', 'Nome': 'Eletricidade e Magnetismo II'}, {'Sigla': 'MAT0105', 'Nome': 'Geometria Analítica'}, {'Sigla': 'MAT2351', 'Nome': 'Cálculo para Funções de Várias Variáveis I'}]}]
 ```
 
 Para saber mais atributos, use o seguinte comando:
 
 ```python
 >>> disc.__dict__
-{'sigla': '4300372', 'nome': 'Eletromagnetismo', 'departamento': 'Disciplinas Interdepartamentais do Instituto de Física', 'instituto': 'Instituto de Física', 'nome_en': 'Electromagnetism', 'cred_aula': '4', 'cred_trab': '0', 'carga_horaria': '60 h', 'tipo': 'Semestral', 'data_ativação': '01/01/2010', 'data_desativação': '', 'docentes': [], 'objetivos': 'ok', 'programa_resumido': '', 'programa': 'Interação elétrica. Energia no campo, o dipolo elétrico. Interação magnética. Movimento de uma carga em um campo magnético. Interação magnética entre correntes e entre cargas. Campos eletromagnéticos estáticos na matéria. Polarização. A lei de Ampère na forma diferencial. Ondas eletromagnéticas. Energia e quantidade de movimento de uma onda eletromagnética. Radiação de dipolo. Radiação da carga acelerada. Campos eletromagnéticos dependentes do tempo. As leis de Maxwell em forma diferencial. Reflexão, refração e polarização. Interferência. Cavidades ressonantes. Guias de ondas. Difração.', 'avaliação': {'Método': 'ok', 'Critério': 'ok', 'Norma de Recuperação': 'com 2a avaliação'}, 'bibliografia': '.'}
+...
 ```
 
 ### Disciplna pelo nome
@@ -84,7 +86,6 @@ E sabemos manipular esse tipo de objeto, já que foi visto no outro tutotrial, �
 
 ## ✏ O que falta fazer?  
 
-- Mostrar os requisitos das disciplinas
 - Mostrar o oferecimento das disciplinas
 - Calendário
 

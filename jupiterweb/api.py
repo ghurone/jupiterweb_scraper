@@ -1,10 +1,46 @@
+from pytest import param
 import requests
 from bs4 import BeautifulSoup
 
 
+def requisitos_por_codigo(codigo:str):
+    URL = 'https://uspdigital.usp.br/jupiterweb/listarCursosRequisitos'
+    req = requests.get(URL, params={'coddis':codigo})
+    
+    if req.status_code == 200:
+        soup = BeautifulSoup(req.text, 'lxml')
+        msg = soup.find('div', attrs={'id':'web_mensagem'})
+        
+        if msg:
+            return {'Erro': msg.text.strip()}
+        else:   
+            tabela_bruta = soup.find('form', attrs={'name':'form1'}).find('table',attrs={'cellspacing':'2'}).find_all('td')
+            tabela = []
+            
+            i = -1
+            for row in tabela_bruta:
+                if row.font and row.font['color'] == '#FFFFFF':
+                    chave = row.font.text
+                    chave = " ".join(chave.split())
+                    tabela.append({'Curso': chave[7:], 'Disciplinas':[]})
+                    
+                    i += 1
+                    
+                elif not row.div:
+                    texto = row.text.strip()
+                    
+                    if len(texto) > 7:
+                        texto = " ".join(texto.split())
+                        tabela[i]['Disciplinas'].append({'Sigla': texto[:7], 'Nome':texto[10:]})
+                    
+            return tabela
+        
+    else:
+        raise requests.HTTPError(f'erro: {req.status_code}')
+         
+
 def buscar_disciplina_por_codigo(codigo:str) -> dict:
     URL = 'https://uspdigital.usp.br/jupiterweb/obterDisciplina'
-    
     req = requests.get(URL, params={'sgldis': codigo})
     
     if req.status_code == 200:
@@ -41,8 +77,13 @@ def buscar_disciplina_por_codigo(codigo:str) -> dict:
             elif cls == 'txt_arial_10pt_black':
                 conteudo[itens[i]] = row.text.strip() 
                 i += 1
-                
-        return Disciplina(conteudo)
+        
+        disc = Disciplina(conteudo)
+        
+        if disc.requisitos == '':
+            disc.requisitos = requisitos_por_codigo(codigo)
+        
+        return disc
             
     else:
         raise requests.HTTPError(f'erro: {req.status_code}')
@@ -103,7 +144,14 @@ class Disciplina:
                           'Norma de Recuperação': dicio['Norma de Recuperação']}
         self.bibliografia = dicio['Bibliografia']
 
-
+        try:
+            self.requisitos = dicio['Requisitos']
+        except KeyError:
+            self.requisitos = ''
+            
+        self.oferecimento = ''
+        
+        
 class Disciplinas:
     def __init__(self, lista:list) -> None:
         self.lista = lista

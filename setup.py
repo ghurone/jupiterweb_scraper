@@ -1,10 +1,12 @@
+from email.encoders import encode_noop
 from setuptools import setup
 
 long_description = open('README.md', encoding='utf8').read()
+requires = open('requirements.txt', encoding='utf8').read().splitlines()
 
 setup(
     name = 'jupiterweb',
-    version = '1.0.3',
+    version = '1.1.0',
     author = 'Érick Ghuron',
     author_email = 'ghuron@usp.br',
     packages = ['jupiterweb'],
@@ -15,6 +17,7 @@ setup(
     project_urls = {
         'Código fonte': 'https://github.com/ghurone/jupiterweb-scraper',
     },
+    install_requires=[requires],
     license = 'MIT',
     keywords = 'jupiterweb ghuron disciplinas',
     classifiers = [
