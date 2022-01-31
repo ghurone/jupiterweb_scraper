@@ -1,7 +1,79 @@
-from pytest import param
 import requests
 from bs4 import BeautifulSoup
 
+
+def oferecimento_por_codigo(codigo:str):
+    URL = 'https://uspdigital.usp.br/jupiterweb/obterTurma'
+    req = requests.get(URL, params={'sgldis': codigo})
+    
+    if req.status_code == 200:
+        soup = BeautifulSoup(req.text, 'lxml')
+        msg = soup.find('div', attrs={'id':'web_mensagem'})
+        
+        if msg:
+            return [{'Erro': msg.text.strip()}]
+        else: 
+            tabelas_brutas = soup.find_all('div', 
+                                        attrs={'style': 'border: 2px solid #658CCF; padding: 5px; border-radius: 5px;'})
+            tabelas = []
+            
+            for div in tabelas_brutas:
+                tabela_1 = div.find('table', attrs={'cellspacing':'2'})
+                tabela_2 = div.find('table', attrs={'cellspacing':'1'})
+                tabela_3 = div.find('table', attrs={'align':'center'})
+                
+                t_1 = {}
+                for font in tabela_1.find_all('font'):
+                    if font['color'] == '#000000':
+                        chave = font.text
+                        chave = " ".join(chave.split())
+                        t_1[chave] = ''
+                        
+                    elif font['color'] == '#666666':
+                        texto = font.text.strip()
+                        texto = " ".join(texto.split())
+                        
+                        t_1[chave] += texto
+                
+                t_2 = {'Horários': []}
+                for row in tabela_2.find_all('tr'):
+                    if row.font['color'] == '#666666':
+                        texto = row.text
+                        texto = " ".join(texto.split())
+                        
+                        t_2['Horários'].append({'Horário':texto[:15], 'Prof(a)':texto[16:]})
+
+                t_3 = {'Tipo':{}}
+                for row in tabela_3.find_all('tr'):
+                    try:
+                        row['bgcolor']
+                    except KeyError:
+                        texto = row.text
+                        texto = " ".join(texto.split())     
+                        
+                        texto_split = texto.split(' ')
+                            
+                        if row.font['color'] == '#000000':
+                            
+                            if len(texto_split) == 5:
+                                chave = texto_split[0]
+                            else:
+                                chave = texto_split[0] + ' ' + texto_split[1]
+                                
+                            t_3['Tipo'][chave] = [{'Curso':'Total','Vagas':texto_split[-4],'Inscritos':texto_split[-3],
+                                                  'Pendentes':texto_split[-2], 'Matriculados':texto_split[-1]}]
+                                         
+                        else:                            
+                            curso = ' '.join(texto_split[:-4])
+                            t_3['Tipo'][chave].append({'Curso':curso,'Vagas':texto_split[-4],'Inscritos':texto_split[-3],
+                                                    'Pendentes':texto_split[-2], 'Matriculados':texto_split[-1]})
+                                                
+                tabelas.append({**t_1, **t_2, **t_3})
+            
+            return tabelas
+    else:
+        raise requests.HTTPError(f'erro: {req.status_code}')
+        
 
 def requisitos_por_codigo(codigo:str):
     URL = 'https://uspdigital.usp.br/jupiterweb/listarCursosRequisitos'
@@ -12,7 +84,7 @@ def requisitos_por_codigo(codigo:str):
         msg = soup.find('div', attrs={'id':'web_mensagem'})
         
         if msg:
-            return {'Erro': msg.text.strip()}
+            return [{'Erro': msg.text.strip()}]
         else:   
             tabela_bruta = soup.find('form', attrs={'name':'form1'}).find('table',attrs={'cellspacing':'2'}).find_all('td')
             tabela = []
@@ -82,6 +154,9 @@ def buscar_disciplina_por_codigo(codigo:str) -> dict:
         
         if disc.requisitos == '':
             disc.requisitos = requisitos_por_codigo(codigo)
+        
+        if disc.oferecimento == '':
+            disc.oferecimento = oferecimento_por_codigo(codigo)
         
         return disc
             

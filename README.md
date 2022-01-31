@@ -86,7 +86,6 @@ E sabemos manipular esse tipo de objeto, já que foi visto no outro tutotrial, �
 
 ## ✏ O que falta fazer?  
 
-- Mostrar o oferecimento das disciplinas
 - Calendário
 
 Se sentiu falta de alguma coisa, entra em contato comigo, no meu perfil você consegue achar maneiras de se comunicar comigo!
