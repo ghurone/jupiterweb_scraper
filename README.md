@@ -64,7 +64,7 @@ Para saber mais atributos, use o seguinte comando:
 ...
 ```
 
-### Disciplna pelo nome
+### Disciplina pelo nome
 
 Se você optar encontrar uma disciplina pelo código
 
