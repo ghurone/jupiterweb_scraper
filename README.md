@@ -1,5 +1,7 @@
 # jupiterweb-scraper
 
+![PyPI](https://img.shields.io/pypi/v/jupiterweb?label=Vers%C3%A3o&style=flat-square)
+
 Um scraper de disciplinas do [jupiterweb](https://uspdigital.usp.br/jupiterweb/). 
 
 ## 📝 Requisitos 
