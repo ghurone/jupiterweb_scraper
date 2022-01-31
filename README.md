@@ -9,9 +9,9 @@ Um scraper de disciplinas do [jupiterweb](https://uspdigital.usp.br/jupiterweb/)
 Antes de instalar você precisa ter os seguintes pacotes:
 
 ```python
-requests==2.26.0
-beautifulsoup4==4.10.0
-lxml==4.6.3
+requests>=2.26.0
+beautifulsoup4>=4.10.0
+lxml>=4.6.3
 ```
 
 Não se preocupe tanto com a versão, pois não utilizei nada de específico dos pacotes.
