@@ -132,7 +132,12 @@ def buscar_disciplina_por_codigo(codigo:str) -> dict:
             
             if cls == 'txt_arial_8pt_black':
                 chave = row.text.strip().replace(':', '')
-                conteudo[chave] = ''
+                 
+                if 'Desativação' in chave and len(chave) > 11:
+                    chave_temp = 'Desativação'
+                    conteudo[chave_temp] = chave.split(' ')[1].strip()
+                else:
+                    conteudo[chave] = ''
                 
                 if chave == 'Docente(s) Responsável(eis)':
                     conteudo[chave] = []
@@ -149,7 +154,7 @@ def buscar_disciplina_por_codigo(codigo:str) -> dict:
             elif cls == 'txt_arial_10pt_black':
                 conteudo[itens[i]] = row.text.strip() 
                 i += 1
-        
+                
         disc = Disciplina(conteudo)
         
         if disc.requisitos == '':
