@@ -74,17 +74,15 @@ Se você optar encontrar uma disciplina pelo código
 >>> discs = buscar_disciplina_por_nome('Eletromagnetismo')
 >>> discs
 discs
-[('4300372', 'Eletromagnetismo'), ('PTC3213', 'Eletromagnetismo'), ('SEL0608', 'Eletromagnetismo'), ('PTC2313', 'Eletromagnetismo'), ('SEL0309', 'Eletromagnetismo'), ('LOM3205', 'Eletromagnetismo'), ('7600021', 'Eletromagnetismo'), ('5910150', 'Eletromagnetismo'), ('7600035', 'Eletromagnetismo Avançado'), ('7600036', 'Eletromagnetismo Computacional'), ('4300303', 'Eletromagnetismo I'), ('4302303', 'Eletromagnetismo I'), ('4300304', 'Eletromagnetismo II'), ('4302304', 'Eletromagnetismo II'), ('4300373', 'Laboratório de Eletromagnetismo'), ('PTC2310', 'Noções de Ondas e Eletromagnetismo')]
+[('4300372', 'Eletromagnetismo'), ('PTC3213', 'Eletromagnetismo'), ('SEL0608', 'Eletromagnetismo'), ('PTC2313', 'Eletromagnetismo'), ('SEL0309', 'Eletromagnetismo'), ('LOM3205', 'Eletromagnetismo'), ('7600021', 'Eletromagnetismo'), ('5910150', 'Eletromagnetismnto'), ('7600035', 'Eletromagnetismo Avançado'), ('7600036', 'Eletromagnetismo Computacional'), ('4300303', 'Eletromagnetismo I'), ('4302303', 'Eletromagnetismo I'), ('4300304', 'Eletromagnetismo II'), ('4302304', 'Eletromagnetismo II'), ('4300373', 'Laboratório de Eletromagnetismo'), ('PTC2310', 'Noções de Ondas e Eletromagnetismo')]
 ```
 
-Nesse caso ele mostra uma lista de tuplas. Ai você escolhe a disciplina pelo indice.
+Nesse caso ele mostra uma lista de tuplas. Então para escolher uma disciplina, basta selecionar o seu indicie no objeto.
 
 ```python
 >>> discs[0]
 <jupiterweb.api.Disciplina object at 0x0000021754E971C0>
 ```
-
-E sabemos manipular esse tipo de objeto, já que foi visto no outro tutotrial, é só manipular da mesma maneira.
 
 ## ✏ O que falta fazer?  
 
