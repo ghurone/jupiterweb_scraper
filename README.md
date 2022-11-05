@@ -1,4 +1,4 @@
-# jupiterweb-scraper
+# Jupiterweb Scraper
 
 ![PyPI](https://img.shields.io/pypi/v/jupiterweb?label=Vers%C3%A3o&style=flat-square)
 
