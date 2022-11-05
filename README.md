@@ -24,6 +24,12 @@ Não se preocupe tanto com a versão, pois não utilizei nada de específico dos
 pip install jupiterweb
 ```
 
+Se o pip não estiver configurado, pode tentar instalar da seguinte maneira
+
+```bash
+python -m pip install jupiterweb
+```
+
 ## 🧙‍♂️ Guia rápido 
 
 No momento, o scraper só possui duas funcionalidades, buscar disciplinas pelo código ou pelo nome. E podem ser importados da seguinte maneira

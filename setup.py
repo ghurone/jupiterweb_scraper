@@ -1,4 +1,3 @@
-from email.encoders import encode_noop
 from setuptools import setup
 import jupiterweb as jup
 
@@ -19,7 +18,7 @@ setup(
     },
     install_requires=['beautifulsoup4>=4.10.0', 'lxml>=4.6.3', 'requests>=2.26.0'],
     license = 'MIT',
-    keywords = 'jupiterweb ghuron disciplinas usp',
+    keywords = 'jupiterweb disciplinas usp ghuron',
     classifiers = [
         'Development Status :: 5 - Production/Stable',
         'Intended Audience :: Developers',
