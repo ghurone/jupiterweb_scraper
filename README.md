@@ -1,7 +1,6 @@
 # JúpiterWeb Scraper
 
 ![PyPI - Python Version](https://img.shields.io/badge/python-%3E%3D%203.8%20-blue?style=flat-square)
-
 ![PyPI](https://img.shields.io/pypi/v/jupiterweb?label=Versão&style=flat-square)
 
 Um scraper de disciplinas do [jupiterweb](https://uspdigital.usp.br/jupiterweb/). 
