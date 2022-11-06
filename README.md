@@ -1,20 +1,8 @@
-# Jupiterweb Scraper
+# JúpiterWeb Scraper
 
 ![PyPI](https://img.shields.io/pypi/v/jupiterweb?label=Vers%C3%A3o&style=flat-square)
 
 Um scraper de disciplinas do [jupiterweb](https://uspdigital.usp.br/jupiterweb/). 
-
-## 📝 Requisitos 
-
-Antes de instalar você precisa ter os seguintes pacotes:
-
-```python
-requests>=2.26.0
-beautifulsoup4>=4.10.0
-lxml>=4.6.3
-```
-
-Não se preocupe tanto com a versão, pois não utilizei nada de específico dos pacotes.
 
 ## ⚙ Como instalar 
 
@@ -35,7 +23,8 @@ python -m pip install jupiterweb
 No momento, o scraper só possui duas funcionalidades, buscar disciplinas pelo código ou pelo nome. E podem ser importados da seguinte maneira
 
 ```python
->>> from jupiterweb import buscar_disciplina_por_codigo, buscar_disciplina_por_nome
+>>> from jupiterweb import JupiterWeb
+>>> client = JupiterWeb()
 ```
 
 ### Disciplna pelo codigo
@@ -43,7 +32,7 @@ No momento, o scraper só possui duas funcionalidades, buscar disciplinas pelo c
 Se você optar encontrar uma disciplina pelo código
 
 ```python
->>> disc = buscar_disciplina_por_codigo('4300372')
+>>> disc = client.disciplina_codigo('4300372')
 >>> disc 
 <jupiterweb.api.Disciplina object at 0x000001B433080D00>
 ```
@@ -65,11 +54,11 @@ Agora temos um objeto do tipo Discipina, vou mostrar algums atributos que ele po
 [{'Curso': '43031 Física Licenciatura (diurno) - Período ideal: 6', 'Disciplinas': [{'Sigla': '4300160', 'Nome': 'Ótica'}, {'Sigla': '4300271', 'Nome': 'Eletricidade e Magnetismo II'}, {'Sigla': 'MAT0105', 'Nome': 'Geometria Analítica'}, {'Sigla': 'MAT2351', 'Nome': 'Cálculo para Funções de Várias Variáveis I'}]}, {'Curso': '43031 Física Licenciatura (noturno) - Período ideal: 6', 'Disciplinas': [{'Sigla': '4300160', 'Nome': 'Ótica'}, {'Sigla': '4300271', 'Nome': 'Eletricidade e Magnetismo II'}, {'Sigla': 'MAT0105', 'Nome': 'Geometria Analítica'}, {'Sigla': 'MAT2351', 'Nome': 'Cálculo para Funções de Várias Variáveis I'}]}]
 ```
 
-Para saber mais atributos, use o seguinte comando:
+Para saber mais atributos da classe:
 
 ```python
->>> disc.__dict__
-...
+>>> disc.__dict__.keys()
+dict_keys(['sigla', 'nome', 'departamento', 'instituto', 'nome_en', 'cred_aula', 'cred_trab', 'carga_horaria', 'tipo', 'data_ativação', 'data_desativação', 'docentes', 'objetivos', 'programa_resumido', 'programa', 'avaliação', 'bibliografia', 'requisitos', 'oferecimento'])
 ```
 
 ### Disciplina pelo nome
@@ -77,10 +66,10 @@ Para saber mais atributos, use o seguinte comando:
 Se você optar encontrar uma disciplina pelo código
 
 ```python
->>> discs = buscar_disciplina_por_nome('Eletromagnetismo')
+>>> discs = client.disciplina_nome('Eletromagnetismo')
 >>> discs
 discs
-[('4300372', 'Eletromagnetismo'), ('PTC3213', 'Eletromagnetismo'), ('SEL0608', 'Eletromagnetismo'), ('PTC2313', 'Eletromagnetismo'), ('SEL0309', 'Eletromagnetismo'), ('LOM3205', 'Eletromagnetismo'), ('7600021', 'Eletromagnetismo'), ('5910150', 'Eletromagnetismnto'), ('7600035', 'Eletromagnetismo Avançado'), ('7600036', 'Eletromagnetismo Computacional'), ('4300303', 'Eletromagnetismo I'), ('4302303', 'Eletromagnetismo I'), ('4300304', 'Eletromagnetismo II'), ('4302304', 'Eletromagnetismo II'), ('4300373', 'Laboratório de Eletromagnetismo'), ('PTC2310', 'Noções de Ondas e Eletromagnetismo')]
+(('4300372', 'Eletromagnetismo'), ('PTC3213', 'Eletromagnetismo'), ('SEL0608', 'Eletromagnetismo'), ('PTC2313', 'Eletromagnetismo'), ('SEL0309', 'Eletromagnetismo'), ('LOM3205', 'Eletromagnetismo'), ('7600021', 'Eletromagnetismo'), ('5910150', 'Eletromagnetismnto'), ('7600035', 'Eletromagnetismo Avançado'), ('7600036', 'Eletromagnetismo Computacional'), ('4300303', 'Eletromagnetismo I'), ('4302303', 'Eletromagnetismo I'), ('4300304', 'Eletromagnetismo II'), ('4302304', 'Eletromagnetismo II'), ('4300373', 'Laboratório de Eletromagnetismo'), ('PTC2310', 'Noções de Ondas e Eletromagnetismo'))
 ```
 
 Nesse caso ele mostra uma lista de tuplas. Então para escolher uma disciplina, basta selecionar o seu indicie no objeto.

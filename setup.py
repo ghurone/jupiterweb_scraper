@@ -2,6 +2,7 @@ from setuptools import setup
 import jupiterweb as jup
 
 long_description = open('README.md', encoding='utf8').read()
+install_requires = open('requirements.txt', encoding='utf8').read().replace('\n', ' ').split()
 
 setup(
     name = 'jupiterweb',
@@ -12,11 +13,11 @@ setup(
     description = 'Um scraper de disciplinas do jupiterweb',
     long_description=long_description,
     long_description_content_type='text/markdown',
-    url = 'https://github.com/ghurone/jupiterweb-scraper',
+    url = 'https://github.com/ghurone/jupiterweb_scraper',
     project_urls = {
-        'Código fonte': 'https://github.com/ghurone/jupiterweb-scraper',
+        'Código fonte': 'https://github.com/ghurone/jupiterweb_scraper',
     },
-    install_requires=['beautifulsoup4>=4.10.0', 'lxml>=4.6.3', 'requests>=2.26.0'],
+    install_requires=install_requires,
     license = 'MIT',
     keywords = 'jupiterweb disciplinas usp ghuron',
     classifiers = [
