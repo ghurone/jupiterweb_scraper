@@ -20,6 +20,7 @@ setup(
     install_requires=install_requires,
     license = 'MIT',
     keywords = 'jupiterweb disciplinas usp ghuron',
+    python_requires='>=3.8',
     classifiers = [
         'Development Status :: 5 - Production/Stable',
         'Intended Audience :: Developers',

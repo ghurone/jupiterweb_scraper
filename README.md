@@ -1,22 +1,26 @@
 # JúpiterWeb Scraper
 
-![PyPI](https://img.shields.io/pypi/v/jupiterweb?label=Vers%C3%A3o&style=flat-square)
+![PyPI - Python Version](https://img.shields.io/badge/python-%3E%3D%203.8%20-blue?style=flat-square)
+
+![PyPI](https://img.shields.io/pypi/v/jupiterweb?label=Versão&style=flat-square)
 
 Um scraper de disciplinas do [jupiterweb](https://uspdigital.usp.br/jupiterweb/). 
 
 ## ⚙ Como instalar 
 
-É bem fácil de instalar, caso você já tenha o pip instalado e configurado é só utilizar o comando de instalação
+Caso você já tenha o pip instalado e configurado é só utilizar o comando de instalação:
 
 ```bash
 pip install jupiterweb
 ```
 
-Se o pip não estiver configurado, pode tentar instalar da seguinte maneira
+Se o pip não estiver configurado, pode tentar instalar da seguinte maneira:
 
 ```bash
 python -m pip install jupiterweb
 ```
+
+Se nenhum dos comandos acima funcionar, pesquise em como con
 
 ## 🧙‍♂️ Guia rápido 
 
