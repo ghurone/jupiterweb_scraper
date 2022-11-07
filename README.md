@@ -40,28 +40,41 @@ Se você optar encontrar uma disciplina pelo código
 <jupiterweb.api.Disciplina object at 0x000001B433080D00>
 ```
 
-Agora temos um objeto do tipo Discipina, vou mostrar algums atributos que ele possui.
+Agora temos um objeto do tipo Discipina! Podemos acessar suas informações da seguinte maneira:
 
 ```python
 >>> disc.nome
 'Eletromagnetismo'
+>>> disc['nome']
+'Eletromagnetismo'
 >>> disc.instituto
 'Instituto de Física'
->>> disc.cred_trab
-'0'
->>> disc.cred_aula
-'4'
->>> disc.objetivos
-'ok'
->>> disc.requisitos
-[{'Curso': '43031 Física Licenciatura (diurno) - Período ideal: 6', 'Disciplinas': [{'Sigla': '4300160', 'Nome': 'Ótica'}, {'Sigla': '4300271', 'Nome': 'Eletricidade e Magnetismo II'}, {'Sigla': 'MAT0105', 'Nome': 'Geometria Analítica'}, {'Sigla': 'MAT2351', 'Nome': 'Cálculo para Funções de Várias Variáveis I'}]}, {'Curso': '43031 Física Licenciatura (noturno) - Período ideal: 6', 'Disciplinas': [{'Sigla': '4300160', 'Nome': 'Ótica'}, {'Sigla': '4300271', 'Nome': 'Eletricidade e Magnetismo II'}, {'Sigla': 'MAT0105', 'Nome': 'Geometria Analítica'}, {'Sigla': 'MAT2351', 'Nome': 'Cálculo para Funções de Várias Variáveis I'}]}]
+>>> disc['instituto']
+'Instituto de Física'
 ```
 
-Para saber mais atributos da classe:
+Utilize o método ``` .chaves() ``` para ver todos os outros atributos dessa classe
 
 ```python
->>> disc.__dict__.keys()
-dict_keys(['sigla', 'nome', 'departamento', 'instituto', 'nome_en', 'cred_aula', 'cred_trab', 'carga_horaria', 'tipo', 'data_ativação', 'data_desativação', 'docentes', 'objetivos', 'programa_resumido', 'programa', 'avaliação', 'bibliografia', 'requisitos', 'oferecimento'])
+>>> disc.chaves()
+('instituto',
+ 'departamento',
+ 'codigo',
+ 'nome',
+ 'nome_ingles',
+ 'creditos_aula',
+ 'creditos_trabalho',
+ 'carga_horaria_total',
+ 'tipo',
+ 'ativacao',
+ 'desativacao',
+ 'objetivos',
+ 'programa_resumido',
+ 'programa',
+ 'avaliacao',
+ 'bibliografia',
+ 'requisitos',
+ 'oferecimento')
 ```
 
 ### Disciplina pelo nome
@@ -70,20 +83,45 @@ Se você optar encontrar uma disciplina pelo código
 
 ```python
 >>> discs = client.disciplina_nome('Eletromagnetismo')
->>> discs
-discs
-(('4300372', 'Eletromagnetismo'), ('PTC3213', 'Eletromagnetismo'), ('SEL0608', 'Eletromagnetismo'), ('PTC2313', 'Eletromagnetismo'), ('SEL0309', 'Eletromagnetismo'), ('LOM3205', 'Eletromagnetismo'), ('7600021', 'Eletromagnetismo'), ('5910150', 'Eletromagnetismnto'), ('7600035', 'Eletromagnetismo Avançado'), ('7600036', 'Eletromagnetismo Computacional'), ('4300303', 'Eletromagnetismo I'), ('4302303', 'Eletromagnetismo I'), ('4300304', 'Eletromagnetismo II'), ('4302304', 'Eletromagnetismo II'), ('4300373', 'Laboratório de Eletromagnetismo'), ('PTC2310', 'Noções de Ondas e Eletromagnetismo'))
+>>> discs.codigos_disciplinas()
+('4300372',
+ 'PTC3213',
+ 'SEL0608',
+ 'PTC2313',
+ 'SEL0309',
+ 'LOM3205',
+ '7600021',
+ '5910150',
+ '7600035',
+ '7600036',
+ '4300303',
+ '4302303',
+ '4300304',
+ '4302304',
+ '4300373',
+ 'PTC2310')
 ```
 
-Nesse caso ele mostra uma lista de tuplas. Então para escolher uma disciplina, basta selecionar o seu indicie no objeto.
+Para escolher uma disciplina, podemos selecionar o seu indície no objeto.
 
 ```python
 >>> discs[0]
 <jupiterweb.api.Disciplina object at 0x0000021754E971C0>
 ```
 
+Assim é retornado um objeto do tipo Disciplina, o qual sabemos como utilizar.
+
+Também é possível selecionar pelo código da disciplina:
+
+```python
+>>> discs.obter_disciplina('4300372')
+<jupiterweb.api.Disciplina object at 0x0000021754E971C0>
+```
+
+
 ## ✏ O que falta fazer?  
 
-- Calendário
+- Documentar a API.
+- Função Calendário.
 
-Se sentiu falta de alguma coisa, entra em contato comigo, no meu perfil você consegue achar maneiras de se comunicar comigo!
+Se sentiu falta de alguma coisa? Tem alguma sugestão? Entre em contato comigo ou utilize das ferramentas do Github.

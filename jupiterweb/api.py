@@ -1,59 +1,85 @@
+from unicodedata import normalize
+
 import requests
 from bs4 import BeautifulSoup
+
+import jupiterweb.exceptions as exc
 
 
 class Disciplina:
     def __init__(self, dicio:dict) -> None:
-        self.sigla, self.nome = dicio['Nome disciplina'][12:19], dicio['Nome disciplina'][22:]
-        self.departamento = dicio['Departamento']
-        self.instituto = dicio['Instituto']
-        self.nome_en = dicio['Nome inglês']
+        self._dicio = {}
         
-        self.cred_aula = dicio['Créditos Aula']
-        self.cred_trab = dicio['Créditos Trabalho']
-        self.carga_horaria = dicio['Carga Horária Total']
-        self.tipo = dicio['Tipo']
-        self.data_ativação = dicio['Ativação']
-        self.data_desativação = dicio['Desativação']
+        for key, value in dicio.items():
+            key = normalize('NFD', key).encode('ascii', "ignore")
+            key = key.decode('utf8').replace(' ', '_').lower()
+            self._dicio[key] = value
         
-        try:
-            self.docentes = dicio['Docente(s) Responsável(eis)']
-        except KeyError:
-            self.docentes = []
-        
-        self.objetivos = dicio['Objetivos']
-        self.programa_resumido = dicio['Programa Resumido']
-        self.programa = dicio['Programa']
-        self.avaliação = {'Método': dicio['Método'], 'Critério': dicio['Critério'],
-                          'Norma de Recuperação': dicio['Norma de Recuperação']}
-        self.bibliografia = dicio['Bibliografia']
+    def __str__(self) -> str:
+        return str(self._dicio)
 
-        try:
-            self.requisitos = dicio['Requisitos']
-        except KeyError:
-            self.requisitos = ''
-            
-        self.oferecimento = ''
-
-
-class Disciplinas:
-    def __init__(self, lista:tuple) -> None:
-        self._lista = lista
+    def __getattr__(self, _name: str):
+        return self[_name]
     
+    def __getitem__(self, _name:str):
+        if _name in self.chaves():
+            return self._dicio[_name]
+        raise exc.DisciplinaError('Essa chave não existe!')
+    
+    def __setitem__(self, *args):
+        raise exc.DisciplinaError('As Disciplinas são imutáveis.')
+    
+    def __iter__(self):
+        return iter(self._dicio)
+    
+    def chaves(self):
+        return tuple(self._dicio.keys())
+    
+    def itens(self):
+        return self._dicio.items()
+    
+    
+class GrupoDisciplinas:
+    def __init__(self, lista:tuple[tuple[str,str]]) -> None:
+        self._lista = lista
+        self._dicio = dict(elem for elem in lista)
+        
+        self._client = JupiterWeb()
+        
     def __getitem__(self, key):
-        return JupiterWeb().disciplina_codigo(self._lista[key][0])
+        if not isinstance(key, int):
+            raise TypeError('O indíce precisa ser um número inteiro.')
+        
+        if key > len(self._lista) - 1:
+            raise IndexError('Indíce fora do interválo.')
+        
+        return self._client.disciplina_codigo(self._lista[key][0])
 
+    def __setitem__(self, *args):
+        raise exc.GrupoDisciplinaError('O objeto `GrupoDisciplinas` é imutável.')
+    
     def __str__(self) -> str:
         return str(self._lista)
     
     def __repr__(self) -> str:
         return str(self)
+    
+    def __len__(self) -> int:
+        return len(self._lista)
+    
+    def codigos_disciplinas(self):
+        return tuple(self._dicio.keys())
+    
+    def obter_disciplina(self, codigo):
+        codigo = str(codigo)
+        if not codigo in self.codigos_disciplinas():
+            raise exc.GrupoDisciplinaError('Esse código não está no grupo.')
+        
+        index = self.codigos_disciplinas().index(codigo)
+        return self[index]
 
 
 class JupiterWeb:
-    
-    def __init__(self) -> None:
-        pass
     
     def disciplina_codigo(self, codigo: str or int) -> Disciplina:
         
@@ -69,49 +95,58 @@ class JupiterWeb:
         self._check_erro(soup)
         
         tabela_bruta = soup.find('form', attrs={'name':'form1'}).find_all('span')
-        itens = ['Instituto', 'Departamento', 'Nome disciplina', 'Nome inglês']
+        itens = ['Instituto', 'Departamento', 'Disciplina', 'Nome ingles']
         conteudo = {}
         
         i = 0
         for row in tabela_bruta:
             cls = row.attrs.get('class')[0]
+            texto = ' '.join(row.text.split())
             
             if cls == 'txt_arial_8pt_black':
-                chave = row.text.strip().replace(':', '')
+                chave = texto.replace(':', "")
                     
                 if 'Desativação' in chave and len(chave) > 11:
                     chave_temp = 'Desativação'
                     conteudo[chave_temp] = chave.split(' ')[1].strip()
+                
+                elif chave == 'Docente(s) Responsável(eis)':
+                    conteudo['Docentes'] = []
+                    
                 else:
                     conteudo[chave] = ''
                 
-                if chave == 'Docente(s) Responsável(eis)':
-                    conteudo[chave] = []
-                
             elif cls == 'txt_arial_8pt_gray':
-                texto = row.text.strip().replace('\n','').replace('\t', '').replace('\r', '').replace('\xa0', ' ')
-                
                 if texto:
                     if chave == 'Docente(s) Responsável(eis)':
-                        conteudo[chave].append(texto)
+                        conteudo['Docentes'].append(texto)
                     else:
                         conteudo[chave] += texto
                         
             elif cls == 'txt_arial_10pt_black':
-                conteudo[itens[i]] = row.text.strip() 
+                if i != 2:
+                    conteudo[itens[i]] = texto
+                else:
+                    code, nome = texto.split('-', 1)
+                    code = code.split(':', 1)[-1]
+                    conteudo['Codigo'] = code.strip()
+                    conteudo['Nome'] = nome.strip()
+                    
                 i += 1
-                
-        disc = Disciplina(conteudo)
         
-        if disc.requisitos == '':
-            disc.requisitos = self._requisitos_por_codigo(codigo)
+        conteudo['Avaliacao'] = {'metodo': conteudo['Método'], 'criterio': conteudo['Critério'],
+                          'norma_de_recuperacao': conteudo['Norma de Recuperação']}
         
-        if disc.oferecimento == '':
-            disc.oferecimento = self._oferecimento_por_codigo(codigo)
+        del conteudo['Método']
+        del conteudo['Norma de Recuperação']
+        del conteudo['Critério']
         
-        return disc
+        conteudo['Requisitos'] = self._requisitos_por_codigo(codigo)
+        conteudo['Oferecimento'] = self._oferecimento_por_codigo(codigo)
+        
+        return Disciplina(conteudo) 
 
-    def disciplina_nome(self, nome:str) -> Disciplinas:
+    def disciplina_nome(self, nome:str) -> GrupoDisciplinas:
    
         if not isinstance(nome, str):
             raise TypeError('O nome da disciplina precisa ser do tipo `str`')
@@ -130,7 +165,7 @@ class JupiterWeb:
         tabela_bruta = soup.find(lambda tag:tag.name == "table" and len(tag.attrs) == 2).find_all('a')
         disc = tuple((row.attrs['href'][23:30], row.text) for row in tabela_bruta)
             
-        return Disciplinas(disc)
+        return GrupoDisciplinas(disc)
     
     def _oferecimento_por_codigo(self, codigo: str or int) -> list[dict]:
 
@@ -246,4 +281,4 @@ class JupiterWeb:
     def _check_erro(soup:BeautifulSoup) -> None:
         msg = soup.find('div', attrs={'id':'web_mensagem'})
         if msg:
-            raise ValueError(msg.text.strip())
+            raise exc.JupiterWebMsgError(msg.text.strip())
